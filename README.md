@@ -1,6 +1,6 @@
  [Jamii Connect]
 
-# Getting Started with Create React App
+# Getting Started with Jamii connect
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
