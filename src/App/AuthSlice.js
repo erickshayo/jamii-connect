@@ -9,14 +9,17 @@ const user = localStorage.getItem('user')
   ? localStorage.getItem('user')
   : null
 
+const currrentUsrRl = localStorage.getItem('ussrCrrl')?localStorage.getItem('ussrCrrl'):4
+
 const authSlice = createSlice({
    name: "auth",
-   initialState: { user:user , token: token },
+   initialState: { user:user , token: token, currrentUsrRl:currrentUsrRl},
    reducers: {
       loginAuth: (state, action) => {
-         const { user, token } = action.payload
+         const { user, token, role } = action.payload
          state.user = user
          state.token = token
+          state.currrentUsrRl =currrentUsrRl
       },
       logOut: (state, action) => {
          state.user = null
@@ -47,6 +50,5 @@ export default authSlice.reducer;
 export const authRegReducer = authRegSlice.reducer;
 
 export const selectCurrentUser = (state) => state.auth.user;
-console.log(selectCurrentUser);
 
 export const selectCurrentToken = (state) => state.auth.token;
