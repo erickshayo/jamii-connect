@@ -11,6 +11,7 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Main from "./components/layout/Main";
 import PageNotFounnd from "./pages/pageNotFound";
+import LostFound from "./pages/LostFound";
 
 export default function Routeer() {
   const token = useSelector(selectCurrentToken);
@@ -43,6 +44,10 @@ export default function Routeer() {
         {
           path: "billing",
           element: <Billing />,
+        },
+        {
+          path: "lost-found",
+          element: <LostFound />,
         },
       ],
     },
