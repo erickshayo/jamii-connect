@@ -52,3 +52,5 @@ export const authRegReducer = authRegSlice.reducer;
 export const selectCurrentUser = (state) => state.auth.user;
 
 export const selectCurrentToken = (state) => state.auth.token;
+
+export const selectUserCurretRole = (state) =>  state.auth.currrentUsrRl;

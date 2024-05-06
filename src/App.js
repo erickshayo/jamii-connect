@@ -11,6 +11,7 @@ import Main from "./components/layout/Main";
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
+import  RequireAuth from "./App/AdminRequireAuth"
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
       <Switch>
         <Route path="/sign-up" exact component={SignUp} />
         <Route path="/sign-in" exact component={SignIn} />
-        <Main>
+      <RequireAuth>
+      <Main>
           <Route exact path="/dashboard" component={Home} />
           <Route exact path="/tables" component={Tables} />
           <Route exact path="/billing" component={Billing} />
@@ -26,6 +28,7 @@ function App() {
           <Route exact path="/profile" component={Profile} />
           <Redirect from="*" to="/dashboard" />
         </Main>
+      </RequireAuth>
       </Switch>
     </div>
   );
