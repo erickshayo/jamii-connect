@@ -1,36 +1,30 @@
 
-import { Switch, Route, Redirect } from "react-router-dom";
-import Home from "./pages/Home";
-import Tables from "./pages/Tables";
-import Billing from "./pages/Billing";
-import Rtl from "./pages/Rtl";
-import Profile from "./pages/Profile";
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
-import Main from "./components/layout/Main";
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
-import  RequireAuth from "./App/AdminRequireAuth"
 
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Routeer from './routes';
+// import ErrorBoundary from './components/ErrorBoundary';
+import { Provider } from 'react-redux';
 function App() {
   return (
+    <React.Suspense fallback={
+      <div className='flex flex-col items-center justify-center h-screen'>
+      {/* <img src={Loader} alt="Loading..." className='max-w-md' /> */}
+      <h6 className='text-xs'>Loading...</h6>
+      </div>
+    }>
+      {/* <ErrorBoundary> */}
     <div className="App">
-      <Switch>
-        <Route path="/sign-up" exact component={SignUp} />
-        <Route path="/sign-in" exact component={SignIn} />
-      <RequireAuth>
-      <Main>
-          <Route exact path="/dashboard" component={Home} />
-          <Route exact path="/tables" component={Tables} />
-          <Route exact path="/billing" component={Billing} />
-          <Route exact path="/rtl" component={Rtl} />
-          <Route exact path="/profile" component={Profile} />
-          <Redirect from="*" to="/dashboard" />
-        </Main>
-      </RequireAuth>
-      </Switch>
+      
+       <Routeer />
+     
+     
     </div>
+    {/* </ErrorBoundary> */}
+    </React.Suspense>
   );
 }
 

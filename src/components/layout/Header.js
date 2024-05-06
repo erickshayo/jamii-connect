@@ -1,14 +1,4 @@
-/*!
-  =========================================================
-  * Muse Ant Design Dashboard - v1.0.0
-  =========================================================
-  * Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-  * Copyright 2021 Creative Tim (https://www.creative-tim.com)
-  * Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-  * Coded by Creative Tim
-  =========================================================
-  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
+
 
 import { useState, useEffect } from "react";
 
@@ -25,6 +15,8 @@ import {
   Drawer,
   Typography,
   Switch,
+  Modal,
+  Space
 } from "antd";
 
 import {
@@ -32,6 +24,8 @@ import {
   StarOutlined,
   TwitterOutlined,
   FacebookFilled,
+  LogoutOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 
 import { NavLink, Link } from "react-router-dom";
@@ -183,6 +177,7 @@ const menu = (
   />
 );
 
+
 const logsetting = [
   <svg
     width="20"
@@ -266,7 +261,96 @@ function Header({
   useEffect(() => window.scrollTo(0, 0));
 
   const showDrawer = () => setVisible(true);
+  const [modal, contextHolder] = Modal.useModal();
   const hideDrawer = () => setVisible(false);
+
+  
+  const confirm = () => {
+    modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Log out from e-Mzani',
+      okText: 'OK',
+      okType:"danger",
+      cancelText: 'cancel',
+      onOk:() => {
+        
+      }
+    });
+  };
+
+  const items = [
+    {
+      key: "1",
+      label: (
+          <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="#"
+          >
+            nhdhdh
+          </a>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+          <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.aliyun.com"
+          >
+            Admin
+          </a>
+      ),
+      icon: <StarOutlined />,
+      disabled: true,
+    },
+    {
+      key: "4",
+      danger: true,
+      icon: <LogoutOutlined />,
+      label: "Log out",
+      onClick:() => {
+        localStorage.clear();
+        window.location.reload()
+      }
+    },
+  ];
+
+  const itemUser = (
+    <List
+    dataSource={items}
+    renderItem={(item) => (
+      <List.Item
+        key={item.key}
+        extra={item.icon}
+        actions={[
+          <div
+          className=""
+          >
+            <Button
+            key="logout"
+            className=""
+            type={item.danger ? 'danger' : 'default'}
+            disabled={item.disabled}
+            onClick={() => {
+              localStorage.clear();
+        window.location.reload()
+             }}
+          >
+            {item.label}
+          </Button>
+          </div>
+        ]}
+      >
+        <div className="p-2">
+        {item.label}
+        </div>
+      </List.Item>
+    )}
+  />
+  );
 
   return (
     <>
@@ -421,8 +505,18 @@ function Header({
               </div>
             </div>
           </Drawer>
+          <Dropdown overlay={itemUser} trigger={["click"]}>
+              <a
+                href="#pablo"
+                className="ant-dropdown-link "
+                onClick={(e) => e.preventDefault()}
+              >
+                {profile}
+              </a>
+            </Dropdown>
+         
           <Link to="/sign-in" className="btn-sign-in">
-            {profile}
+            {/* {profile} */}
             <span>Sign in</span>
           </Link>
           <Input

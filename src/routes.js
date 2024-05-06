@@ -10,10 +10,13 @@ import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Main from "./components/layout/Main";
+import PageNotFounnd from "./pages/pageNotFound";
 
 export default function Routeer() {
   const token = useSelector(selectCurrentToken);
-  const RouterLazy = React.lazy(() => import("react-router-dom"));
+  console.log('====================================');
+  console.log(token);
+  console.log('====================================');
 
   const routes = useRoutes([
     {
@@ -46,7 +49,7 @@ export default function Routeer() {
     {
       path: "*",
       element: <Navigate to="/404" replace />,
-      element: <PageNotFound />,
+      element: <PageNotFounnd />,
     },
   ]);
 

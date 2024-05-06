@@ -18,8 +18,11 @@ import {
 import React, {useEffect} from 'react';
 import { useState } from "react";
 import { Colors } from "../constants/Colors";
-import { useHistory } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { useFormPost } from "../hooks/FormDataHoook";
+import { useDispatch } from "react-redux";
+import { loginAuth } from "../App/AuthSlice";
+import { authUrls } from "../utils/apis";
 const { Content, Sider } = Layout;
 
 
@@ -37,10 +40,11 @@ const onFinishFailed = (errorInfo) => {
 export default function LoginPage() {
   const [loginType, setLoginType] = useState("phone");
   const [isloading, setisloading] = useState(false);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState();
   const [sovereignty, setsovereignty] = useState("warning");
-  const history = useHistory();
+  const navigate = useNavigate();
+  const formPost = useFormPost();
 
 
     useEffect(() => {
@@ -69,27 +73,52 @@ export default function LoginPage() {
   const onFinish = async (values) => {
       localStorage.clear()
     setisloading(true);
+    const body = {
+        phone_number: values.phone,
+        password: values.password
+      };
     try {
-      // const response = await userLogin({
-      //   variables: {
-      //     username: values.username,
-      //     password: values.password,
-      //   },
-      // });
-      //  console.log(response);
+        const response = await formPost.post({
+            url: authUrls.login,
+            data: body,
+            login:true
+          });
+       console.log(response);
 
+       if (response.success) {
+        const localStorageUser = {id:response.user, role:response.user.role}
+
+        const role = response?.user.role  == 1 ? "Adm": response?.user.role  == 2 ? "ldr":"ctzn";
+    
+        localStorage.setItem("user", JSON.stringify(localStorageUser));
+        localStorage.setItem("ussrCrrl", role);
+        const userdata = {user:response.user, token:response.token, role: role}
+        localStorage.setItem("token", response.token);
+        dispatch(loginAuth({ ...userdata }));
+ 
+        navigate("/");
+       }else{
+        setErrorMsg("incorrect password or email ");
+       }
       // const { error, user, token } = response.data?.login;
 
     } catch (error) {
-      setsovereignty("error");
-      setErrorMsg(error.message);
-    }
-    setisloading(false);
-  };
+        if (!error?.respose) {
+            setErrorMsg("No server respose or invalid login credentials try again!");
+          } else if (error.respose?.status === 400) {
+            setErrorMsg("incorrect password or email ");
+          } else {
+            setErrorMsg("login failed try again later");
+          }
+        }
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+        setisloading(false)
+    }
+   
+
+
+  
+
 
   return (
 
@@ -161,8 +190,8 @@ export default function LoginPage() {
                   </div>
                   <Form.Item
                       className="username"
-                      label="Email"
-                      name="username"
+                      label="Phone"
+                      name="phone"
                       rules={[
                           {
                               required: true,
@@ -170,7 +199,7 @@ export default function LoginPage() {
                           },
                       ]}
                   >
-                      <Input placeholder="Email" type="email" className="" />
+                      <Input placeholder="Phone" type="tel" className="" />
                   </Form.Item>
 
                   <Form.Item
