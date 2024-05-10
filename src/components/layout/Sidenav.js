@@ -160,7 +160,7 @@ function Sidenav({ color }) {
     <>
       <div className="brand">
         <img src={logo} alt="" />
-        <span>JamiiConnect</span>
+        <span>Jamii - Connect</span>
       </div>
       <hr />
       {
@@ -180,7 +180,7 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>
         <Menu.Item key="2">
-          <NavLink to="/tables">
+          <NavLink to="/announcements">
             <span
               className="icon"
               style={{
@@ -189,11 +189,11 @@ function Sidenav({ color }) {
             >
               {tables}
             </span>
-            <span className="label">Tables</span>
+            <span className="label">Announcements</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item key="3">
-          <NavLink to="/billing">
+          <NavLink to="/forum">
             <span
               className="icon"
               style={{
@@ -202,12 +202,25 @@ function Sidenav({ color }) {
             >
               {billing}
             </span>
-            <span className="label">Billing</span>
+            <span className="label">Forum</span>
           </NavLink>
         </Menu.Item>
 
         <Menu.Item className="menu-item-header" key="5">
-          Account Pages
+          More
+        </Menu.Item>
+        <Menu.Item key="4">
+          <NavLink to="/lost-found">
+            <span
+              className="icon"
+              style={{
+                background: page === "billing" ? color : "",
+              }}
+            >
+              {billing}
+            </span>
+            <span className="label">Lost & Found</span>
+          </NavLink>
         </Menu.Item>
    
        
@@ -228,7 +241,7 @@ function Sidenav({ color }) {
         </NavLink>
       </Menu.Item>
       <Menu.Item key="2">
-        <NavLink to="/tables">
+        <NavLink to="/announcements">
           <span
             className="icon"
             style={{
@@ -237,11 +250,11 @@ function Sidenav({ color }) {
           >
             {tables}
           </span>
-          <span className="label">Tables</span>
+          <span className="label">Announcements</span>
         </NavLink>
       </Menu.Item>
       <Menu.Item key="3">
-        <NavLink to="/billing">
+        <NavLink to="/forum">
           <span
             className="icon"
             style={{
@@ -250,12 +263,38 @@ function Sidenav({ color }) {
           >
             {billing}
           </span>
-          <span className="label">Billing</span>
+          <span className="label">Forum</span>
         </NavLink>
       </Menu.Item>
 
       <Menu.Item className="menu-item-header" key="5">
-        Account Pages
+        More
+      </Menu.Item>
+      <Menu.Item key="4">
+        <NavLink to="/lost-found">
+          <span
+            className="icon"
+            style={{
+              background: page === "billing" ? color : "",
+            }}
+          >
+            {billing}
+          </span>
+          <span className="label">Lost & Found</span>
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item key="5">
+        <NavLink to="/citizen">
+          <span
+            className="icon"
+            style={{
+              background: page === "billing" ? color : "",
+            }}
+          >
+            {billing}
+          </span>
+          <span className="label">Citizen</span>
+        </NavLink>
       </Menu.Item>
  
      
@@ -277,7 +316,7 @@ function Sidenav({ color }) {
       </NavLink>
     </Menu.Item>
     <Menu.Item key="2">
-      <NavLink to="/tables">
+      <NavLink to="/announcements">
         <span
           className="icon"
           style={{
@@ -290,7 +329,7 @@ function Sidenav({ color }) {
       </NavLink>
     </Menu.Item>
     <Menu.Item key="3">
-      <NavLink to="/billing">
+      <NavLink to="/forum">
         <span
           className="icon"
           style={{
@@ -324,7 +363,7 @@ function Sidenav({ color }) {
   </Menu>
       }
       
-      <div className="aside-footer">
+      {/* <div className="aside-footer">
         <div
           className="footer-box"
           style={{
@@ -340,7 +379,7 @@ function Sidenav({ color }) {
             DOCUMENTATION
           </Button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

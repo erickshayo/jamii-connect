@@ -12,6 +12,9 @@ import SignIn from "./pages/SignIn";
 import Main from "./components/layout/Main";
 import PageNotFounnd from "./pages/pageNotFound";
 import LostFound from "./pages/LostFound";
+import Forum from "./pages/Forum";
+import Announcements from "./pages/Announcements";
+import Citizen from "./pages/Citizen";
 
 export default function Routeer() {
   const token = useSelector(selectCurrentToken);
@@ -38,16 +41,20 @@ export default function Routeer() {
           element: <Home />,
         },
         {
-          path: "tables",
-          element: <Tables />,
+          path: "announcements",
+          element: <Announcements />,
         },
         {
-          path: "billing",
-          element: <Billing />,
+          path: "forum",
+          element: <Forum />,
         },
         {
           path: "lost-found",
           element: <LostFound />,
+        },
+        {
+          path: "citizen",
+          element: <Citizen />,
         },
       ],
     },

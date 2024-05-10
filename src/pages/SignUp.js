@@ -116,7 +116,7 @@ export default function SignUp() {
       fname: nidaInfo.Firstname,
       lname: nidaInfo.Lastname,
       email: values.email,
-      gender: nidaInfo.Gender,
+      gender: nidaInfo.Sex == "MALE" ? "M": "F",
       phone_number: values.phone,
       role: 3,
       nin_number: nidaInfo.Nationalidnumber,
@@ -177,10 +177,11 @@ export default function SignUp() {
                   width={500}
                  loop={true}
               /> */}
+
         </div>
         {/* Add aligned content about the digital scale */}
         <div style={{ marginTop: "2px" }}>
-          <h1>e-Mzani</h1>
+          <h1>Jamii - Connect</h1>
           <h3>A bluetooth enabled digital scale</h3>
           <p>Measure everything with precision.</p>
         </div>
@@ -196,7 +197,7 @@ export default function SignUp() {
       >
         <div className="w-2/3">
           <div className="fl">
-            <h1 className="text-xl font-bold text-center">e-Mzani</h1>
+            <h1 className="text-xl font-bold text-center">Jamii - Connect</h1>
             <Divider plain>
               <span
                 style={{
@@ -212,8 +213,8 @@ export default function SignUp() {
           {nidaInfo && (
             <div>
               <h2>User Detail</h2>
-              <p>Name: {nidaInfo?.Firstname}</p>
-              <p>Email: {nidaInfo?.Firstname}</p>
+              <p>Name: {nidaInfo?.Firstname + nidaInfo?.Middlename + nidaInfo?.Firstname}</p>
+              <p>Gender: {nidaInfo?.Sex}</p>
               {/* Add more fields as needed */}
             </div>
           )}
