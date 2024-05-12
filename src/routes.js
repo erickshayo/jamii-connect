@@ -15,12 +15,11 @@ import LostFound from "./pages/LostFound";
 import Forum from "./pages/Forum";
 import Announcements from "./pages/Announcements";
 import Citizen from "./pages/Citizen";
+import Addresses from "./pages/Addresses";
+import AdminForums from "./pages/AdminForums";
 
 export default function Routeer() {
   const token = useSelector(selectCurrentToken);
-  console.log('====================================');
-  console.log(token);
-  console.log('====================================');
 
   const routes = useRoutes([
     {
@@ -55,6 +54,14 @@ export default function Routeer() {
         {
           path: "citizen",
           element: <Citizen />,
+        },
+        {
+          path: "adm_addresses",
+          element: <Addresses />,
+        },
+        {
+          path: "adm_forums",
+          element: <AdminForums />,
         },
       ],
     },

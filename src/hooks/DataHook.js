@@ -24,16 +24,13 @@ export const useDataFetch = () => {
         // let response;
         const requestHeader = {
             headers: {
-                // Authorization: "Token "  + token,
-                Authorization: "JWT "  + token,
+                Authorization: "Bearer "  + token,
+                // Authorization: "JWT "  + token,
               }
         }
 
-        // let message = "";
-        // let severity = "info";
-
         try {
-            await axios.get(url, requestHeader)
+            await axios.get(url)
             .then((res) => {
 
                 if(res.status === 200){
