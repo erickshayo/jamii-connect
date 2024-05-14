@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useDataFetch } from '../hooks/DataHook';
 import { announcements, AddressesUrls } from '../utils/apis';
-import { selectCurrentUser } from '../App/AuthSlice';
+import { selectCurrentUser, selectUserCurretRole} from '../App/AuthSlice';
 import { useSelector } from 'react-redux';
 import Column from "antd/es/table/Column";
 import modal from "antd/es/modal";
@@ -17,6 +17,7 @@ function Announcements() {
   const [isLoading, setisLoading] = useState(false);
   const currentUser = useSelector(selectCurrentUser);
   const [openModal, setopenModal] = useState(false);
+  const role = useSelector(selectUserCurretRole);
   const navigate = useNavigate();
   const [announcementsData, setannouncementsData] = useState([]);
   const [address, setaddress] = useState();
@@ -122,11 +123,13 @@ function Announcements() {
         title={`Annoucements for ${address?.name}`}
         extra={
           <>
-            <Radio.Group defaultValue="a">
+            {
+              role == 'ctzn' ? '':<Radio.Group defaultValue="a">
               <Radio.Button value="a" onClick={() =>  {
                 navigate("/add_announcement", {state:{record:address}})
               }}>Add an Annoucement</Radio.Button>
-            </Radio.Group>
+            </Radio.Group>              
+            }
           </>
         }
       >

@@ -20,6 +20,8 @@ import AdminForums from "./pages/AdminForums";
 import AddAnnouncentModal from "./components/ui/AddAnnouncentModal";
 import ChooseAddress from "./pages/ChooseAddress";
 
+import AddressForums from "./pages/AddressForums";
+
 export default function Routeer() {
   const token = useSelector(selectCurrentToken);
 
@@ -72,6 +74,10 @@ export default function Routeer() {
         {
           path: "add_announcement",
           element: <AddAnnouncentModal />,
+        },
+        {
+          path: "address-forum",
+          element: <AddressForums />,
         },
       ],
     },

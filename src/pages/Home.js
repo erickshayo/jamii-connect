@@ -130,31 +130,31 @@ function Home() {
   ];
   const count = [
     {
-      today: "Today’s Sales",
-      title: "$53,000",
-      persent: "+30%",
-      icon: dollor,
-      bnb: "bnb2",
-    },
-    {
-      today: "Today’s Users",
-      title: "3,200",
-      persent: "+20%",
+      today: "Today Announcements",
+      title: "5",
+      persent: "",
       icon: profile,
       bnb: "bnb2",
     },
     {
-      today: "New Clients",
-      title: "+1,200",
-      persent: "-20%",
+      today: "Total Address",
+      title: "32",
+      persent: "",
+      icon: profile,
+      bnb: "bnb2",
+    },
+    {
+      today: "Total Forum's",
+      title: "350",
+      persent: "",
       icon: heart,
       bnb: "redtext",
     },
     {
-      today: "New Orders",
-      title: "$13,200",
-      persent: "10%",
-      icon: cart,
+      today: "Today Forum's",
+      title: "67",
+      persent: "",
+      icon: heart,
       bnb: "bnb2",
     },
   ];
@@ -362,7 +362,7 @@ function Home() {
           ))}
         </Row>
 
-        <Row gutter={[24, 0]}>
+        {/* <Row gutter={[24, 0]}>
           <Col xs={24} sm={24} md={12} lg={12} xl={10} className="mb-24">
             <Card bordered={false} className="criclebox h-full">
               <Echart />
@@ -440,7 +440,7 @@ function Home() {
               </div>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
       </div>
     </>
   );
