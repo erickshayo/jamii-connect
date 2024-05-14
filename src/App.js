@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Routeer from './routes';
 // import ErrorBoundary from './components/ErrorBoundary';
 import { Provider } from 'react-redux';
+import AddAnnouncentModal from "./components/ui/AddAnnouncentModal";
 function App() {
   return (
     <React.Suspense fallback={
@@ -23,6 +24,7 @@ function App() {
      
      
     </div>
+    
     {/* </ErrorBoundary> */}
     </React.Suspense>
   );

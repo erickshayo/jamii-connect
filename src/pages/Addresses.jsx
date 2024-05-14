@@ -48,7 +48,7 @@ const fetcher = useDataFetch();
       const handleView = (id) => {
         navigate('/address_details/' + `${id}`);
       };
-    
+   
       const handleDelete = (id) => {
        
           modal.confirm({

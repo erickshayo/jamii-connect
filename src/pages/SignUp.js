@@ -26,14 +26,6 @@ import swal from "sweetalert";
 
 const { Content, Sider } = Layout;
 
-const onFinish = (values) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
-
 export default function SignUp() {
   const [loginType, setLoginType] = useState("phone");
   const [isloading, setisloading] = useState(false);
@@ -139,7 +131,7 @@ export default function SignUp() {
           icon: "success",
           button: "OK",
         });
-        navigate("/sign-in");
+        navigate("/choose-address", {state:{record:nidaInfo.Nationalidnumber}});
       } else {
       }
     } catch (error) {

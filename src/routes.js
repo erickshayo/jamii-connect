@@ -17,6 +17,8 @@ import Announcements from "./pages/Announcements";
 import Citizen from "./pages/Citizen";
 import Addresses from "./pages/Addresses";
 import AdminForums from "./pages/AdminForums";
+import AddAnnouncentModal from "./components/ui/AddAnnouncentModal";
+import ChooseAddress from "./pages/ChooseAddress";
 
 export default function Routeer() {
   const token = useSelector(selectCurrentToken);
@@ -29,6 +31,10 @@ export default function Routeer() {
     {
       path: "/sign-up",
       element: <SignUp />,
+    },
+    {
+      path: "/choose-address",
+      element: <ChooseAddress />,
     },
     {
       path: "/",
@@ -62,6 +68,10 @@ export default function Routeer() {
         {
           path: "adm_forums",
           element: <AdminForums />,
+        },
+        {
+          path: "add_announcement",
+          element: <AddAnnouncentModal />,
         },
       ],
     },

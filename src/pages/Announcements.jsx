@@ -10,11 +10,13 @@ import { UserOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
 import { renderDateTime } from './Addresses';
 import swal from "sweetalert";
+import AddAnnouncentModal from '../components/ui/AddAnnouncentModal';
 
 function Announcements() {
   const fetcher = useDataFetch();
   const [isLoading, setisLoading] = useState(false);
   const currentUser = useSelector(selectCurrentUser);
+  const [openModal, setopenModal] = useState(false);
   const navigate = useNavigate();
   const [announcementsData, setannouncementsData] = useState([]);
   const [address, setaddress] = useState();
@@ -121,7 +123,9 @@ function Announcements() {
         extra={
           <>
             <Radio.Group defaultValue="a">
-              <Radio.Button value="a">Add an Annoucement</Radio.Button>
+              <Radio.Button value="a" onClick={() =>  {
+                navigate("/add_announcement", {state:{record:address}})
+              }}>Add an Annoucement</Radio.Button>
             </Radio.Group>
           </>
         }
@@ -196,6 +200,7 @@ function Announcements() {
           </Table>
         </div>
       </Card>
+    
     </div>
   )
 }
