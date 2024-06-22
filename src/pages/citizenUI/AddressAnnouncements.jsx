@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import { useDataFetch } from '../hooks/DataHook';
-import { announcements, AddressesUrls, usersInfo } from '../utils/apis';
-import { selectCurrentUser, selectUserCurretRole} from '../App/AuthSlice';
+import { useDataFetch } from '../../hooks/DataHook';
+import { announcements, AddressesUrls, usersInfo } from '../../utils/apis';
+import { selectCurrentUser, selectUserCurretRole} from '../../App/AuthSlice';
 import { useSelector } from 'react-redux';
 import Column from "antd/es/table/Column";
 import modal from "antd/es/modal";
 import { Avatar, Button, Card, Radio, Table, Badge, Menu, Dropdown } from "antd";
 import { UserOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
-import { renderDateTime } from './Addresses';
+import { renderDateTime } from '../Addresses';
 import swal from "sweetalert";
-import AddAnnouncentModal from '../components/ui/AddAnnouncentModal';
+import AddAnnouncentModal from '../../components/ui/AddAnnouncentModal';
 
 function Announcements() {
   const fetcher = useDataFetch();
@@ -34,11 +34,11 @@ function Announcements() {
     try {
       const userRespose = await fetcher.fetch({url:usersInfo.usersInfo + `?queryType=single&&user_id=${userId}`});
       setuser(userRespose);
-      const res =await fetcher.fetch({url:AddressesUrls.addrss + `?queryType=single&&userId=${userRespose?.id}`})
-       console.log(res);
-       setaddress(res);
+      const res = await fetcher.fetch({ url: AddressesUrls.addressUser + `?queryType=userAddress&&userId=${userRespose?.id}` })
+      console.log(res);
+      setaddress(res[0].address);
       if (res) {
-        const response = await fetcher.fetch({url:announcements.announcementss+ `?queryType=addressAnnouncement&&addressId=${res?.id}`})
+        const response = await fetcher.fetch({url:announcements.announcementss+ `?queryType=addressAnnouncement&&addressId=${res[0]?.address.id}`})
         console.log(response);
         setannouncementsData(response);
       }

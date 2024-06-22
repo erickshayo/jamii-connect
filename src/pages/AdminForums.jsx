@@ -14,15 +14,21 @@ import {
     Button,
     Timeline,
     Radio,
+    Modal,
+    Popconfirm
   } from "antd";
-  import { UserOutlined, RightOutlined } from "@ant-design/icons";
+  import { UserOutlined, RightOutlined,ExclamationCircleOutlined } from "@ant-design/icons";
+import { baseUrl } from '../utils/BaseUrl';
+import { useFormPost } from '../hooks/FormDataHoook';
 
   const { Title, Text, Paragraph } = Typography;
 const AdminForums = () => {
     const navigate = useNavigate();
     const [forums, setforums] = useState([]);
     const fetcher = useDataFetch();
-  const [isLoading, setisLoading] = useState(false);
+    const formPost = useFormPost();
+
+    const [isLoading, setisLoading] = useState(false);
 
     const loadData = async () => {
         try {
@@ -46,20 +52,105 @@ const AdminForums = () => {
         loadData();
       }, []);
 
+
+      const handleDeleteForum = async (forumId) => {
+        try {
+          // const response = await fetcher.fetch({
+          //   url: `${baseUrl}/api/forum/${forumId}`,
+          //   method: 'delete',
+          // });
+          const response = await formPost.deleteRequest({
+            url: `${baseUrl}/api/forum/${forumId}`,
+          })
+          if (response && response.message === 'Forum deleted successfully') {
+            message.success('Forum deleted successfully');
+            loadData(); // Reload forums after deletion
+          } else {
+            message.error('Failed to delete forum');
+          }
+        } catch (error) {
+          console.error('Error deleting forum:', error);
+          message.error('Failed to delete forum');
+        }
+      };
+    
+      const handleDeactivateForum = async (forumId) => {
+        try {
+          const response = await fetcher.fetch({
+            url: `${baseUrl}/api/forum/${forumId}/deactivate`,
+            method: 'PUT',
+          });
+          if (response && response.message === 'Forum deactivated successfully') {
+            message.success('Forum deactivated successfully');
+            loadData(); // Reload forums after deactivation
+          } else {
+            message.error('Failed to deactivate forum');
+          }
+        } catch (error) {
+          console.error('Error deactivating forum:', error);
+          message.error('Failed to deactivate forum');
+        }
+      };
+    
+      const handleViewForum = (forumId) => {
+        navigate(`/forums/${forumId}`);
+      };
+    
+      const handleDeleteComment = async (commentId) => {
+        try {
+          const response = await fetcher.fetch({
+            url: forumsUrls.comment + `/${commentId}`,
+            method: 'DELETE',
+          });
+          if (response && response.message === 'Comment deleted successfully') {
+            message.success('Comment deleted successfully');
+            // Optionally reload comments or handle UI update
+          } else {
+            message.error('Failed to delete comment');
+          }
+        } catch (error) {
+          console.error('Error deleting comment:', error);
+          message.error('Failed to delete comment');
+        }
+      };
+    
+      const confirmDeleteForum = (forumId) => {
+        Modal.confirm({
+          title: 'Confirm Delete',
+          icon: <ExclamationCircleOutlined />,
+          content: 'Are you sure you want to delete this forum?',
+          okText: 'Delete',
+          okType: 'danger',
+          cancelText: 'Cancel',
+          onOk() {
+            handleDeleteForum(forumId);
+          },
+        });
+      };
+    
+      const confirmDeactivateForum = (forumId) => {
+        Modal.confirm({
+          title: 'Confirm Deactivate',
+          icon: <ExclamationCircleOutlined />,
+          content: 'Are you sure you want to deactivate this forum?',
+          okText: 'Deactivate',
+          cancelText: 'Cancel',
+          onOk() {
+            handleDeactivateForum(forumId);
+          },
+        });
+      };
+
   return (
     <div>
       <Row gutter={[24, 0]}>
           {
             forums.map((forum) => 
-                <Col xs={24} md={12} sm={24} lg={6} xl={14} className="mb-24" key={forum?.id}>
+                <Col xs={24} md={12} sm={24} lg={6} xl={8} className="mb-24" key={forum?.id}>
             <Card bordered={false} className="criclebox h-full">
               <Row gutter>
                 <Col
-                  xs={24}
-                  md={12}
-                  sm={24}
-                  lg={12}
-                  xl={14}
+           
                   className="mobile-24"
                 >
                   <div className="h-full col-content p-20">
@@ -72,8 +163,29 @@ const AdminForums = () => {
                     </div>
                     <Text>Address: {forum?.address.name} </Text>
                     <div className="card-footer">
-                     <Button color='red' className='bg-red-100 hover:bg-red-200 hover:text-white'>Delete</Button>
-                     <Button>Deactivate</Button>
+
+                     
+                    <div className="forum-actions">
+                <Button onClick={() => handleViewForum(forum.id)}>View</Button>
+                <Popconfirm
+                  title="Are you sure to delete this forum?"
+                  onConfirm={() => confirmDeleteForum(forum.id)}
+                  okText="Delete"
+                  cancelText="Cancel"
+                  placement="topRight"
+                >
+                  <Button type="danger">Delete</Button>
+                </Popconfirm>
+                <Popconfirm
+                  title="Are you sure to deactivate this forum?"
+                  onConfirm={() => confirmDeactivateForum(forum.id)}
+                  okText="Deactivate"
+                  cancelText="Cancel"
+                  placement="topRight"
+                >
+                  <Button>Deactivate</Button>
+                </Popconfirm>
+              </div>
                       <a className="icon-move-right" href="#pablo">
                         Read More
                         {<RightOutlined />}
@@ -82,18 +194,7 @@ const AdminForums = () => {
                     </div>
                   </div>
                 </Col>
-                <Col
-                  xs={24}
-                  md={12}
-                  sm={24}
-                  lg={12}
-                  xl={10}
-                  className="col-img"
-                >
-                  <div className="ant-cret text-right">
-                    <img src={card} alt="" className="border10" />
-                  </div>
-                </Col>
+              
               </Row>
             </Card>
           </Col>

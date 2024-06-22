@@ -180,7 +180,7 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>
         <Menu.Item key="2">
-          <NavLink to="/announcements">
+          <NavLink to="/adm_announcements">
             <span
               className="icon"
               style={{
@@ -233,6 +233,19 @@ function Sidenav({ color }) {
               {billing}
             </span>
             <span className="label">Lost & Found</span>
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key="5">
+          <NavLink to="/users">
+            <span
+              className="icon"
+              style={{
+                background: page === "tables" ? color : "",
+              }}
+            >
+              {tables}
+            </span>
+            <span className="label">Users</span>
           </NavLink>
         </Menu.Item>
    
@@ -329,7 +342,7 @@ function Sidenav({ color }) {
       </NavLink>
     </Menu.Item>
     <Menu.Item key="2">
-      <NavLink to="/announcements">
+      <NavLink to="/user_announcements">
         <span
           className="icon"
           style={{
@@ -342,7 +355,7 @@ function Sidenav({ color }) {
       </NavLink>
     </Menu.Item>
     <Menu.Item key="3">
-      <NavLink to="/address-forum">
+      <NavLink to="/user_forums">
         <span
           className="icon"
           style={{

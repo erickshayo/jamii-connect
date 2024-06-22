@@ -1,25 +1,24 @@
 import React, {useState, useEffect} from 'react';
-import { useDataFetch } from '../hooks/DataHook';
-import { announcements, AddressesUrls, usersInfo } from '../utils/apis';
-import { selectCurrentUser, selectUserCurretRole} from '../App/AuthSlice';
+import { useDataFetch } from '../../hooks/DataHook';
+import { announcements, AddressesUrls } from '../../utils/apis';
+import { selectCurrentUser, selectUserCurretRole} from '../../App/AuthSlice';
 import { useSelector } from 'react-redux';
 import Column from "antd/es/table/Column";
 import modal from "antd/es/modal";
 import { Avatar, Button, Card, Radio, Table, Badge, Menu, Dropdown } from "antd";
 import { UserOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
-import { renderDateTime } from './Addresses';
+import { renderDateTime } from '../Addresses';
 import swal from "sweetalert";
-import AddAnnouncentModal from '../components/ui/AddAnnouncentModal';
+// import AddAnnouncentModal from '../components/ui/AddAnnouncentModal';
 
-function Announcements() {
+function AdminAnnouncements() {
   const fetcher = useDataFetch();
   const [isLoading, setisLoading] = useState(false);
   const currentUser = useSelector(selectCurrentUser);
   const [openModal, setopenModal] = useState(false);
   const role = useSelector(selectUserCurretRole);
   const navigate = useNavigate();
-  const [user, setuser] = useState(null)
   const [announcementsData, setannouncementsData] = useState([]);
   const [address, setaddress] = useState();
   const announcementsDataSNo = announcementsData.map((item, index) => ({
@@ -28,18 +27,13 @@ function Announcements() {
   }));
 
 
-  //  console.log(JSON.parse(currentUser).id.id);
+   console.log(JSON.parse(currentUser).id.id);
   const loadAnnouncements = async ( ) => {
-    const userId =  localStorage.getItem("crusr_id")
-    try {
-      const userRespose = await fetcher.fetch({url:usersInfo.usersInfo + `?queryType=single&&user_id=${userId}`});
-      setuser(userRespose);
-      const res =await fetcher.fetch({url:AddressesUrls.addrss + `?queryType=single&&userId=${userRespose?.id}`})
-       console.log(res);
-       setaddress(res);
-      if (res) {
-        const response = await fetcher.fetch({url:announcements.announcementss+ `?queryType=addressAnnouncement&&addressId=${res?.id}`})
+    try { 
+        const response = await fetcher.fetch({url:announcements.announcementss+ `?queryType=all`})
         console.log(response);
+      if (response) {
+        
         setannouncementsData(response);
       }
       
@@ -124,18 +118,18 @@ function Announcements() {
        <Card
         bordered={true}
         className=" w-full overflow-hidden"
-        title={`Annoucements for ${address?.name}`}
-        extra={
-          <>
-            {
-              role == 'ctzn' ? '':<Radio.Group defaultValue="a">
-              <Radio.Button value="a" onClick={() =>  {
-                navigate("/add_announcement", {state:{record:address}})
-              }}>Add an Annoucement</Radio.Button>
-            </Radio.Group>              
-            }
-          </>
-        }
+        title={`All Announcements`}
+        // extra={
+        //   <>
+        //     {
+        //       role == 'ctzn' ? '':<Radio.Group defaultValue="a">
+        //       <Radio.Button value="a" onClick={() =>  {
+        //         navigate("/add_announcement", {state:{record:address}})
+        //       }}>Add an Annoucement</Radio.Button>
+        //     </Radio.Group>              
+        //     }
+        //   </>
+        // }
       >
         <div>
           <Table
@@ -212,4 +206,4 @@ function Announcements() {
   )
 }
 
-export default Announcements
+export default AdminAnnouncements

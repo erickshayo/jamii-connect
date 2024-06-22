@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useDataFetch } from '../hooks/DataHook';
-import { forumsUrls, usersInfo, AddressesUrls } from '../utils/apis';
+import { useDataFetch } from '../../hooks/DataHook';
+import { forumsUrls, usersInfo, AddressesUrls } from '../../utils/apis';
 import { useNavigate } from 'react-router-dom';
-import card from "../assets/images/info-card-1.jpg";
 import {
   Card,
   Col,
@@ -22,10 +21,10 @@ import {
 
 } from "antd";
 import { UserOutlined, RightOutlined, ExclamationCircleOutlined,CustomerServiceOutlined } from "@ant-design/icons";
-import { baseUrl } from '../utils/BaseUrl';
-import { useFormPost } from '../hooks/FormDataHoook';
+import { baseUrl } from '../../utils/BaseUrl';
+import { useFormPost } from '../../hooks/FormDataHoook';
 import { FloatButton } from 'antd';
-import { selectUserCurretRole } from '../App/AuthSlice';
+import { selectUserCurretRole } from '../../App/AuthSlice';
 import { useSelector } from 'react-redux';
 
 const { Title, Text, Paragraph } = Typography;
@@ -45,12 +44,12 @@ const AdminForums = () => {
     try {
       setisLoading(true);
       const userRespose = await fetcher.fetch({ url: usersInfo.usersInfo + `?queryType=single&&user_id=${userId}` });
-      const res = await fetcher.fetch({ url: AddressesUrls.addrss + `?queryType=single&&userId=${userRespose?.id}` })
+      const res = await fetcher.fetch({ url: AddressesUrls.addressUser + `?queryType=userAddress&&userId=${userRespose?.id}` })
       console.log(res);
-      setaddress(res);
+      setaddress(res[0].address);
       if (res) {
         const response = await fetcher.fetch({
-          url: forumsUrls.forums + `?queryType=single_address&&addressId=${res?.id}`,
+          url: forumsUrls.forums + `?queryType=all`,
         });
         console.log(response);
 

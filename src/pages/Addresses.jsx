@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { useDataFetch } from '../hooks/DataHook';
-import { AddressesUrls } from '../utils/apis';
+import { AddressesUrls,usersInfo } from '../utils/apis';
 import { useNavigate } from 'react-router-dom';
 import Column from "antd/es/table/Column";
 import modal from "antd/es/modal";
-import { Avatar, Button, Card, Radio, Table, Badge, Menu, Dropdown } from "antd";
+import { Avatar, Button, Card, Radio, Table, Badge, Menu, Dropdown,Modal,Form, message, Input, Select } from "antd";
 import { UserOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { useFormPost } from '../hooks/FormDataHoook';
 
 export const renderDateTime = (dateString) => {
     const dateTime = new Date(dateString);
@@ -16,12 +17,30 @@ const Addresses = () => {
 const fetcher = useDataFetch();
   const [isLoading, setisLoading] = useState(false);
   const [addressessAdm, setaddressessAdm] = useState([]);
+  const [leaders, setLeaders] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const formPost = useFormPost();
+  const [newAddress, setNewAddress] = useState({ name: '', postalCode: '', admin: '' });
   const addressessAdmSNo = addressessAdm.map((item, index) => ({
     ...item,
     sNo: index + 1,
   }));
   
   const navigate = useNavigate();
+
+
+  const loadLeaders = async () => {
+    try {
+      const response = await fetcher.fetch({
+        url: usersInfo.usersInfo + `?queryType=all&role=2`, // Assuming role 2 is for leaders
+      });
+      if (response) {
+        setLeaders(response);
+      }
+    } catch (error) {
+      console.error('Failed to load leaders:', error);
+    }
+  };
 
     const loadData = async () => {
         try {
@@ -43,6 +62,7 @@ const fetcher = useDataFetch();
 
       useEffect(() => {
         loadData();
+        loadLeaders();
       }, []);
 
       const handleView = (id) => {
@@ -97,19 +117,49 @@ const fetcher = useDataFetch();
         );
     
       }
+
+      const showModal = () => {
+        setIsModalVisible(true);
+      };
+    
+      const handleOk = async () => {
+        try {
+    
+          const response = formPost.post({url:AddressesUrls.addrss, data:newAddress})
+          if (response.save) {
+            message.success('address added successfully');
+            // setAddresses([...addresses, response]);
+            setIsModalVisible(false);
+          }else{
+            message.error('Failed to add address, address with this admin exists');
+          }
+        } catch (error) {
+          message.error('Failed to add address');
+          console.error('Failed to add address:', error);
+        }
+      };
+
+      const handleCancel = () => {
+        setIsModalVisible(false);
+      };
+
+      const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewAddress({ ...newAddress, [name]: value });
+      };
+    
+      const handleAdminChange = (value) => {
+        setNewAddress({ ...newAddress, admin: value });
+      };
     
   return (
     <div>
          <Card
         bordered={true}
         className=" w-full overflow-hidden"
-        title="Corporate Identity share"
+        title="Addresses"
         extra={
-          <>
-            <Radio.Group defaultValue="a">
-              <Radio.Button value="a">Add an Address</Radio.Button>
-            </Radio.Group>
-          </>
+          <Button type="primary" onClick={showModal}>Add an Address</Button>
         }
       >
         <div>
@@ -180,7 +230,34 @@ const fetcher = useDataFetch();
           </Table>
         </div>
       </Card>
-    
+      <Modal
+        title="Add Address"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form layout="vertical">
+          <Form.Item label="Name">
+            <Input name="name" value={newAddress.name} onChange={handleInputChange} />
+          </Form.Item>
+          <Form.Item label="Postal Code">
+            <Input name="postalCode" value={newAddress.postalCode} onChange={handleInputChange} />
+          </Form.Item>
+          <Form.Item label="Admin">
+            <Select
+              value={newAddress.admin}
+              onChange={handleAdminChange}
+              placeholder="Select an admin"
+            >
+              {leaders?.map((leader) => (
+                <Select.Option key={leader.id} value={leader.id}>
+                  {leader.fname} {leader.lname} - {leader.phone_number}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   )
 }

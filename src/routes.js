@@ -21,6 +21,12 @@ import AddAnnouncentModal from "./components/ui/AddAnnouncentModal";
 import ChooseAddress from "./pages/ChooseAddress";
 
 import AddressForums from "./pages/AddressForums";
+import Users from "./pages/adminUI/Users";
+import ViewForum from "./pages/adminUI/ViewForum"
+import AdminAnnouncements from "./pages/adminUI/AdminAnnouncements"
+import AddressUsers from "./pages/leaderUi/Users";
+import UserForums from "./pages/citizenUI/UserForums"
+import UserAddressAnnouncement from "./pages/citizenUI/AddressAnnouncements"
 
 export default function Routeer() {
   const token = useSelector(selectCurrentToken);
@@ -52,6 +58,14 @@ export default function Routeer() {
           element: <Announcements />,
         },
         {
+          path: "user_announcements",
+          element: <UserAddressAnnouncement />,
+        },
+        {
+          path: "adm_announcements",
+          element: < AdminAnnouncements/>,
+        },
+        {
           path: "forum",
           element: <Forum />,
         },
@@ -59,10 +73,10 @@ export default function Routeer() {
           path: "lost-found",
           element: <LostFound />,
         },
-        {
-          path: "citizen",
-          element: <Citizen />,
-        },
+        // {
+        //   path: "citizen",
+        //   element: <Citizen />,
+        // },
         {
           path: "adm_addresses",
           element: <Addresses />,
@@ -72,12 +86,28 @@ export default function Routeer() {
           element: <AdminForums />,
         },
         {
+          path: "user_forums",
+          element: <UserForums />,
+        },
+        {
           path: "add_announcement",
           element: <AddAnnouncentModal />,
         },
         {
           path: "address-forum",
           element: <AddressForums />,
+        },
+        {
+          path: "users",
+          element: <Users />,
+        },
+        {
+          path: "citizen",
+          element: <AddressUsers />,
+        },
+        {
+          path: "forums/:forumIds",
+          element: <ViewForum />,
         },
       ],
     },

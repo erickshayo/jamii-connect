@@ -23,6 +23,7 @@ import axios from "axios";
 import { useFormPost } from "../hooks/FormDataHoook";
 import { authUrls } from "../utils/apis";
 import swal from "sweetalert";
+import signup from "../assets/images/Sign-up.gif"
 
 const { Content, Sider } = Layout;
 
@@ -42,7 +43,7 @@ export default function SignUp() {
     console.log(values);
     try {
       const response = await axios.get(
-        `http://192.168.96.159:8000/auth/nin_info?nida=${values.nida}`
+        `http://192.168.1.187:8000/auth/nin_info?nida=${values.nida}`
       );
       console.log(response);
       if (response?.status === 200) {
@@ -108,7 +109,7 @@ export default function SignUp() {
       fname: nidaInfo.Firstname,
       lname: nidaInfo.Lastname,
       email: values.email,
-      gender: nidaInfo.Sex == "MALE" ? "M": "F",
+      gender: nidaInfo.Sex == "MALE" ? "M" : "F",
       phone_number: values.phone,
       role: 3,
       nin_number: nidaInfo.Nationalidnumber,
@@ -131,7 +132,7 @@ export default function SignUp() {
           icon: "success",
           button: "OK",
         });
-        navigate("/choose-address", {state:{record:nidaInfo.Nationalidnumber}});
+        navigate("/choose-address", { state: { record: nidaInfo.Nationalidnumber } });
       } else {
       }
     } catch (error) {
@@ -153,7 +154,7 @@ export default function SignUp() {
       <Sider
         width={500}
         style={{
-          background: "darkgray",
+          background: "white",
           color: "#fff",
           padding: "20px",
           textAlign: "center",
@@ -174,8 +175,11 @@ export default function SignUp() {
         {/* Add aligned content about the digital scale */}
         <div style={{ marginTop: "2px" }}>
           <h1>Jamii - Connect</h1>
-          <h3>A bluetooth enabled digital scale</h3>
-          <p>Measure everything with precision.</p>
+          {/* <h3>A bluetooth enabled digital scale</h3>
+          <p>Measure everything with precision.</p> */}
+          <div className="d-flex justify-content-center pt-24 pb-3 rounded">
+            <img src={signup} alt="mastercard" />
+          </div>
         </div>
       </Sider>
       <Content
@@ -205,7 +209,7 @@ export default function SignUp() {
           {nidaInfo && (
             <div>
               <h2>User Detail</h2>
-              <p>Name: {nidaInfo?.Firstname + nidaInfo?.Middlename + nidaInfo?.Firstname}</p>
+              <p>Name: {nidaInfo?.Firstname + " " + nidaInfo?.Middlename + " " + nidaInfo?.Lastname}</p>
               <p>Gender: {nidaInfo?.Sex}</p>
               {/* Add more fields as needed */}
             </div>
@@ -276,7 +280,7 @@ export default function SignUp() {
               >
                 <Checkbox
                   defaultChecked
-                  // style={{ backgroundColor: Colors.primary }}
+                // style={{ backgroundColor: Colors.primary }}
                 />
                 Remember me
               </Form.Item>
@@ -301,12 +305,12 @@ export default function SignUp() {
                   </Button>
                 )}
               </Form.Item>
-              <p className="font-semibold text-muted">
+              {/* <p className="font-semibold text-muted">
                 Have an account?{" "}
                 <a href="/sign-up" className="text-dark font-bold">
                   Sign In
                 </a>
-              </p>
+              </p> */}
             </Form>
           ) : (
             <Form
@@ -364,7 +368,14 @@ export default function SignUp() {
             </Form>
           )}
 
-          <div
+          <p className="font-semibold text-muted">
+            Have an account?{" "}
+            <a href="/sign-in" className="text-dark font-bold">
+              Sign In
+            </a>
+          </p>
+
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "center",
@@ -427,7 +438,7 @@ export default function SignUp() {
                 <WeiboOutlined style={{ color: "#333333" }} />
               </div>
             </Space>
-          </div>
+          </div> */}
         </div>
       </Content>
     </Layout>

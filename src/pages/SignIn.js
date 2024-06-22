@@ -23,6 +23,7 @@ import { useFormPost } from "../hooks/FormDataHoook";
 import { useDispatch } from "react-redux";
 import { loginAuth } from "../App/AuthSlice";
 import { authUrls } from "../utils/apis";
+import signin from "../assets/images/Sign-in.gif"
 const { Content, Sider } = Layout;
 
 
@@ -91,14 +92,16 @@ export default function LoginPage() {
         const role = response?.user.role  == 1 ? "Adm": response?.user.role  == 2 ? "ldr":"ctzn";
     
         localStorage.setItem("user", JSON.stringify(localStorageUser));
-        localStorage.setItem("ussrCrrl", role);
+        localStorage.setItem("user", JSON.stringify(localStorageUser));
+        localStorage.setItem("crusr_id", response.user.id);
         const userdata = {user:response.user, token:response.token, role: role}
         localStorage.setItem("token", response.token);
+        localStorage.setItem('ussrCrrl', role)
         dispatch(loginAuth({ ...userdata }));
  
         navigate("/");
        }else{
-        setErrorMsg("incorrect password or email ");
+        setErrorMsg("incorrect password or phone ");
        }
       // const { error, user, token } = response.data?.login;
 
@@ -126,7 +129,7 @@ export default function LoginPage() {
           <Sider
               width={500}
               style={{
-                  background: "darkgray",
+                  background: "white",
                   color: '#fff',
                   padding: '20px',
                   textAlign: 'center',
@@ -145,9 +148,12 @@ export default function LoginPage() {
             </div>
               {/* Add aligned content about the digital scale */}
               <div style={{ marginTop: '2px' }}>
-                  <h1>e-Mzani</h1>
-                  <h3>A bluetooth enabled digital scale</h3>
-                  <p>Measure everything with precision.</p>
+                  <h1 >Jamii - Connect</h1>
+                  {/* <h3>A bluetooth enabled digital scale</h3>
+                  <p>Measure everything with precision.</p> */}
+                  <div className="d-flex justify-content-center pt-24 pb-3 rounded">
+                    <img src={signin} alt="mastercard" />
+                    </div>
               </div>
           </Sider>
           <Content
@@ -161,7 +167,7 @@ export default function LoginPage() {
           >
           <div className="w-2/3">
               <div className="fl">
-                  <h1 className="text-xl font-bold text-center">e-Mzani</h1>
+                  <h1 className="text-xl font-bold text-center">Jamii - Connect</h1>
                   <Divider plain>
                   <span
                       style={{
@@ -248,14 +254,14 @@ export default function LoginPage() {
                           </Button>
                       )}
                   </Form.Item>
-                  <p className="font-semibold text-muted">
+                  <p className="font-semibold text-muted"> 
                       Don't have an account?{" "}
                       <a href="/sign-up" className="text-dark font-bold">
                           Sign Up
                       </a>
                   </p>
               </Form>
-              <div
+              {/* <div
                   style={{
                       display: "flex",
                       justifyContent: "center",
@@ -322,7 +328,7 @@ export default function LoginPage() {
                           />
                       </div>
                   </Space>
-              </div>
+              </div> */}
           </div>
           </Content>
       </Layout>
