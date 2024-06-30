@@ -1,5 +1,4 @@
 
-
 // import { useState } from "react";
 import { Menu, Button } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
@@ -9,11 +8,13 @@ import { useSelector } from "react-redux";
 
 function Sidenav({ color }) {
   const { pathname } = useLocation();
+
   const page = pathname.replace("/", "");
   const role = useSelector(selectUserCurretRole);
   console.log('====================================');
   console.log(role);
   console.log('====================================');
+
 
   const dashboard = [
     <svg

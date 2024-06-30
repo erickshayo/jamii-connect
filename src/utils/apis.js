@@ -24,5 +24,6 @@ export const AddressesUrls = {
 export const forumsUrls = {
     forums : baseUrl + "/api/forum",
     comment : baseUrl + "/api/comment",
+    lostFound: baseUrl + "/api/lost_found"
 }
 

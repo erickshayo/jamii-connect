@@ -44,7 +44,7 @@ export const useDataFetch = () => {
         } catch (error) {
             throw error.message;
         };
-                    console.log(response);
+            
 
         return response;
     }

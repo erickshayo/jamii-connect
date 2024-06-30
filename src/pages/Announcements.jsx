@@ -69,7 +69,6 @@ function Announcements() {
   };
 
   const handleDelete = (id) => {
-   
       modal.confirm({
         title: 'Confirm',
         icon: <ExclamationCircleOutlined />,
@@ -116,8 +115,6 @@ function Announcements() {
     );
 
   }
-  
-
 
   return (
     <div>

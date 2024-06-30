@@ -31,6 +31,7 @@ export default function SignUp() {
   const [loginType, setLoginType] = useState("phone");
   const [isloading, setisloading] = useState(false);
   const [nidaInfo, setnidaInfo] = useState();
+  const [isNidaLoading, setisNidaLoading] = useState(false)
 
   // const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState();
@@ -41,13 +42,25 @@ export default function SignUp() {
 
   const fetchNidaInfo = async (values) => {
     console.log(values);
+    setisNidaLoading(true);
     try {
       const response = await axios.get(
-        `http://192.168.1.187:8000/auth/nin_info?nida=${values.nida}`
+        `http://localhost:8000/auth/nin_info?nida=${values.nida}`
       );
       console.log(response);
       if (response?.status === 200) {
+        if (response?.data?.user_info === null ) {
+          setErrorMsg(
+            "Invalid Nida no"
+          );
+        }else{
+          setErrorMsg(
+           null
+          );
         setnidaInfo(response?.data?.user_info);
+        }
+        
+
       } else {
         setErrorMsg(
           "Failed to fetch Nida Info Check Your Network and try Again"
@@ -57,6 +70,8 @@ export default function SignUp() {
     } catch (error) {
       setErrorMsg("Failed to fetch Nida Info Check Your Network and try Again");
       console.error(error);
+    }finally{
+      setisNidaLoading(false);
     }
   };
 
@@ -242,17 +257,29 @@ export default function SignUp() {
                 <Input placeholder="Email" type="email" className="" />
               </Form.Item>
               <Form.Item
-                className="username"
+                className="phone-number"
                 label="Phone No"
                 name="phone"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your email!",
+                    message: "Please input your phone number!",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (!value) {
+                        return Promise.reject("Please input your phone number!");
+                      }
+                      const phoneRegex = /^255\d{9}$/;
+                      if (!phoneRegex.test(value)) {
+                        return Promise.reject("Phone number must start with 255 and have 12 digits in total.");
+                      }
+                      return Promise.resolve();
+                    },
                   },
                 ]}
               >
-                <Input placeholder="Phone No" type="tel" className="" />
+                <Input placeholder="Phone No(255..)" type="tel" className="" />
               </Form.Item>
 
               <Form.Item
@@ -360,6 +387,7 @@ export default function SignUp() {
                     style={{ width: "100%", backgroundColor: Colors.primary }}
                     type="primary"
                     htmlType="submit"
+                    loading={isNidaLoading}
                   >
                     Fetch Nida Info
                   </Button>

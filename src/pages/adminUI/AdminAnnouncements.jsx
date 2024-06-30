@@ -27,7 +27,7 @@ function AdminAnnouncements() {
   }));
 
 
-   console.log(JSON.parse(currentUser).id.id);
+  //  console.log(JSON.parse(currentUser).id.id);
   const loadAnnouncements = async ( ) => {
     try { 
         const response = await fetcher.fetch({url:announcements.announcementss+ `?queryType=all`})

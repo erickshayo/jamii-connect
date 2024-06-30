@@ -164,7 +164,7 @@ const fetcher = useDataFetch();
           style={{ marginBottom: '20px', width: '300px' }}
         />
         <Table
-          dataSource={filteredData}
+          dataSource={searchValue === ''? addressessAdmSNo:filteredData}
           className="table-responsive w-full"
           loading={isLoading}
         >
