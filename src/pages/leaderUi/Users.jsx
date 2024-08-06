@@ -24,14 +24,15 @@ const Users = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [address, setaddress] = useState(null);
     const fetcher = useDataFetch()
+    console.log(addressessAdmSNo[0]?.userId);
     const handleSearch = (e) => {
         const value = e.target.value;
         setSearchValue(value);
         const filtered = addressessAdmSNo.filter(user =>
-          user.lname.toLowerCase().includes(value.toLowerCase()) ||
-          user.fname.toLowerCase().includes(value.toLowerCase()) ||
-          user.phone_number.includes(value) ||
-          user.email.toLowerCase().includes(value.toLowerCase())
+          user.userId.lname.toLowerCase().includes(value.toLowerCase()) ||
+          user.userId.fname.toLowerCase().includes(value.toLowerCase()) ||
+          user.userId.phone_number.includes(value) ||
+          user.userId.email.toLowerCase().includes(value.toLowerCase())
         );
         setFilteredData(filtered);
       };
@@ -42,13 +43,13 @@ const Users = () => {
           setisLoading(true);
           const userRespose = await fetcher.fetch({ url: usersInfo.usersInfo + `?queryType=single&&user_id=${userId}` });
           const res = await fetcher.fetch({ url: AddressesUrls.addrss + `?queryType=single&&userId=${userRespose?.id}` })
-          console.log(res);
+ 
           if (res) {
                       setaddress(res);
           const response = await fetcher.fetch({
             url: AddressesUrls.addressUser + `?queryType=single&&addressId=${res?.id}`,
           });
-          console.log(response);
+
             setaddressessAdm(response)
           }
 
@@ -108,7 +109,7 @@ const Users = () => {
           <Menu>
            <Menu.Item key="view" onClick={() => handleItemClick('edit')}>Edit</Menu.Item>
         <Menu.Item key="delete" onClick={() => handleItemClick('delete')}>Delete</Menu.Item>
-        <Menu.Item key="changeRole" onClick={() => handleItemClick('changeRole')}>Change Role</Menu.Item>
+        {/* <Menu.Item key="changeRole" onClick={() => handleItemClick('changeRole')}>Change Role</Menu.Item> */}
           </Menu>
         );
     
@@ -135,7 +136,7 @@ const Users = () => {
           style={{ marginBottom: '20px', width: '300px' }}
         />
         <Table
-          dataSource={addressessAdmSNo}
+          dataSource={searchValue === ""? addressessAdmSNo : filteredData}
           className="table-responsive w-full"
           loading={isLoading}
         >

@@ -60,14 +60,13 @@ const AdminForums = () => {
           //   method: 'delete',
           // });
           const response = await formPost.deleteRequest({
-            url: `${baseUrl}/api/forum/${forumId}`,
+            url: `${baseUrl}/api/forum/${forumId}/`,
           })
-          if (response && response.message === 'Forum deleted successfully') {
+          if (response) {
             message.success('Forum deleted successfully');
             loadData(); // Reload forums after deletion
-          } else {
-            message.error('Failed to delete forum');
-          }
+          } 
+          loadData(); 
         } catch (error) {
           console.error('Error deleting forum:', error);
           message.error('Failed to delete forum');
@@ -80,7 +79,7 @@ const AdminForums = () => {
             url: `${baseUrl}/api/forum/${forumId}/deactivate`,
             method: 'PUT',
           });
-          if (response && response.message === 'Forum deactivated successfully') {
+          if (response) {
             message.success('Forum deactivated successfully');
             loadData(); // Reload forums after deactivation
           } else {
@@ -176,7 +175,7 @@ const AdminForums = () => {
                 >
                   <Button type="danger">Delete</Button>
                 </Popconfirm>
-                <Popconfirm
+                {/* <Popconfirm
                   title="Are you sure to deactivate this forum?"
                   onConfirm={() => confirmDeactivateForum(forum.id)}
                   okText="Deactivate"
@@ -184,7 +183,7 @@ const AdminForums = () => {
                   placement="topRight"
                 >
                   <Button>Deactivate</Button>
-                </Popconfirm>
+                </Popconfirm> */}
               </div>
                       <a className="icon-move-right" href="#pablo">
                         Read More

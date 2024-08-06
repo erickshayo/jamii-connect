@@ -79,7 +79,7 @@ const AdminForums = () => {
       //   method: 'delete',
       // });
       const response = await formPost.deleteRequest({
-        url: `${baseUrl}/api/forum/${forumId}`,
+        url: `${baseUrl}/api/forum/${forumId}/`,
       })
       if (response && response.message === 'Forum deleted successfully') {
         message.success('Forum deleted successfully');
@@ -234,7 +234,7 @@ const AdminForums = () => {
                          >
                            <Button type="danger">Delete</Button>
                          </Popconfirm>
-                         <Popconfirm
+                         {/* <Popconfirm
                            title="Are you sure to deactivate this forum?"
                            onConfirm={() => confirmDeactivateForum(forum.id)}
                            okText="Deactivate"
@@ -242,7 +242,7 @@ const AdminForums = () => {
                            placement="topRight"
                          >
                            <Button>Deactivate</Button>
-                         </Popconfirm>
+                         </Popconfirm> */}
                        </div>
                       )}
                        

@@ -1,33 +1,34 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDataFetch } from '../hooks/DataHook';
-import { AddressesUrls,usersInfo } from '../utils/apis';
+import { AddressesUrls, usersInfo } from '../utils/apis';
 import { useNavigate } from 'react-router-dom';
 import Column from "antd/es/table/Column";
 import modal from "antd/es/modal";
-import { Avatar, Button, Card, Radio, Table, Badge, Menu, Dropdown,Modal,Form, message, Input, Select } from "antd";
+import { Avatar, Button, Card, Radio, Table, Badge, Menu, Dropdown, Modal, Form, message, Input, Select } from "antd";
 import { UserOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useFormPost } from '../hooks/FormDataHoook';
 
 export const renderDateTime = (dateString) => {
-    const dateTime = new Date(dateString);
-    return dateTime.toLocaleDateString();
-  };
+  const dateTime = new Date(dateString);
+  return dateTime.toLocaleDateString();
+};
 
 const Addresses = () => {
-const fetcher = useDataFetch();
+  const fetcher = useDataFetch();
   const [isLoading, setisLoading] = useState(false);
   const [addressessAdm, setaddressessAdm] = useState([]);
   const [leaders, setLeaders] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const formPost = useFormPost();
   const [newAddress, setNewAddress] = useState({ name: '', postalCode: '', admin: '' });
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentAddress, setCurrentAddress] = useState(null);
   const addressessAdmSNo = addressessAdm.map((item, index) => ({
     ...item,
     sNo: index + 1,
   }));
-  
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
 
   const loadLeaders = async () => {
     try {
@@ -42,124 +43,149 @@ const fetcher = useDataFetch();
     }
   };
 
-    const loadData = async () => {
-        try {
-          setisLoading(true);
-          const response = await fetcher.fetch({
-            url: AddressesUrls.addrss + `?queryType=all`,
-          });
-          console.log(response);
+  const loadData = async () => {
+    try {
+      setisLoading(true);
+      const response = await fetcher.fetch({
+        url: AddressesUrls.addrss + `?queryType=all`,
+      });
+      console.log(response);
 
-          if (response) {
-            setaddressessAdm(response)
-          }
-
-          setisLoading(false);
-        } catch (error) {
-          setisLoading(false);
-        }
-      };
-
-      useEffect(() => {
-        loadData();
-        loadLeaders();
-      }, []);
-
-      const handleView = (id) => {
-        navigate('/address_details/' + `${id}`);
-      };
-   
-      const handleDelete = (id) => {
-       
-          modal.confirm({
-            title: 'Confirm',
-            icon: <ExclamationCircleOutlined />,
-            content: 'Delete this Address ',
-            okText: 'OK',
-            okType:"danger",
-            cancelText: 'cancel',
-            onOk:() => {
-              
-            }
-          });
-        console.log(`Edit action for ID: ${id}`);
-      };
-    
-      const ActionDropdown = ({ id}) => {
-        const handleItemClick = (action) => {
-          switch (action) {
-            case 'view':
-              handleView(id);
-              break;
-            case 'delete':
-              handleDelete(id);
-              break;
-            default:
-              break;
-          }
-        };
-    
-        const menu = (
-          <Menu>
-            <Menu.Item key="view" onClick={() => handleItemClick('view')}>
-            View
-            </Menu.Item>
-            <Menu.Item key="dny" onClick={() => handleItemClick('delete')}>
-            Delete
-            </Menu.Item>
-          </Menu>
-        );
-    
-        return (
-          <Dropdown overlay={menu} placement="bottomLeft">
-            <Button>Action</Button>
-          </Dropdown>
-        );
-    
+      if (response) {
+        setaddressessAdm(response);
       }
 
-      const showModal = () => {
-        setIsModalVisible(true);
-      };
-    
-      const handleOk = async () => {
-        try {
-    
-          const response = formPost.post({url:AddressesUrls.addrss, data:newAddress})
-          if (response.save) {
-            message.success('address added successfully');
-            // setAddresses([...addresses, response]);
-            setIsModalVisible(false);
-          }else{
-            message.error('Failed to add address, address with this admin exists');
-          }
-        } catch (error) {
-          message.error('Failed to add address');
-          console.error('Failed to add address:', error);
+      setisLoading(false);
+    } catch (error) {
+      setisLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+    loadLeaders();
+  }, []);
+
+  const handleView = (id) => {
+    navigate('/address_details/' + `${id}`);
+  };
+
+  const handleDelete = (id) => {
+    modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Delete this Address ',
+      okText: 'OK',
+      okType: "danger",
+      cancelText: 'cancel',
+      onOk: () => {
+        formPost.deleteRequest({ url: `${AddressesUrls.addrss}/${id}/` })
+          .then(() => {
+            message.success('Address deleted successfully');
+            loadData();
+          })
+          .catch((error) => {
+            message.error('Failed to delete address');
+            console.error('Failed to delete address:', error);
+          });
+      }
+    });
+  };
+
+  const ActionDropdown = ({ id, item }) => {
+    const handleItemClick = (action) => {
+      switch (action) {
+        case 'view':
+          handleView(id);
+          break;
+        case 'delete':
+          handleDelete(id);
+          break;
+        case 'edit':
+          showModal(item);
+          break;
+        default:
+          break;
+      }
+    };
+
+    const menu = (
+      <Menu>
+        <Menu.Item key="edit" onClick={() => handleItemClick('edit')}>
+          Edit
+        </Menu.Item>
+        <Menu.Item key="delete" onClick={() => handleItemClick('delete')}>
+          Delete
+        </Menu.Item>
+      </Menu>
+    );
+
+    return (
+      <Dropdown overlay={menu} placement="bottomLeft">
+        <Button>Action</Button>
+      </Dropdown>
+    );
+  };
+
+  const showModal = (address = null) => {
+    if (address) {
+      setIsEditing(true);
+      setCurrentAddress(address);
+      setNewAddress({ name: address.name, postalCode: address.postalCode, admin: address.admin.id });
+    } else {
+      setIsEditing(false);
+      setCurrentAddress(null);
+      setNewAddress({ name: '', postalCode: '', admin: '' });
+    }
+    setIsModalVisible(true);
+  };
+
+  const handleOk = async () => {
+    try {
+      if (isEditing) {
+        const response = await formPost.put({ url: `${AddressesUrls.addrss}/${currentAddress.id}/`, data: newAddress });
+        if (response) {
+          message.success('Address updated successfully');
+        } else {
+          message.error('Failed to update address');
         }
-      };
+      } else {
+        const response = await formPost.post({ url: AddressesUrls.addrss, data: newAddress });
+        if (response) {
+          message.success('Address added successfully');
+        } else {
+          message.error('Failed to add address, address with this admin exists');
+        }
+      }
+      setIsModalVisible(false);
+      loadData();
+    } catch (error) {
+      message.error('Failed to save address');
+      console.error('Failed to save address:', error);
+    }
+  };
 
-      const handleCancel = () => {
-        setIsModalVisible(false);
-      };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
-      const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewAddress({ ...newAddress, [name]: value });
-      };
-    
-      const handleAdminChange = (value) => {
-        setNewAddress({ ...newAddress, admin: value });
-      };
-    
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewAddress({ ...newAddress, [name]: value });
+  };
+
+  const handleAdminChange = (value) => {
+    setNewAddress({ ...newAddress, admin: value });
+  };
+
   return (
     <div>
-         <Card
+      <Card
         bordered={true}
-        className=" w-full overflow-hidden"
+        className="w-full overflow-hidden"
         title="Addresses"
         extra={
-          <Button type="primary" onClick={showModal}>Add an Address</Button>
+          <Button type="primary" onClick={() => showModal()}>Add an Address</Button>
         }
       >
         <div>
@@ -179,8 +205,7 @@ const fetcher = useDataFetch();
               key="name"
             />
             <Column title="Postal Code" key="postalCode"
-         dataIndex="postalCode"
-
+              dataIndex="postalCode"
             />
             <Column
               title="Admin Name"
@@ -188,7 +213,7 @@ const fetcher = useDataFetch();
               key="admin"
               render={(data) => (
                 <div>
-                <Badge color="green">{data.fname} {data.lname}</Badge>
+                  <Badge color="green">{data.fname} {data.lname}</Badge>
                 </div>
               )}
             />
@@ -198,7 +223,7 @@ const fetcher = useDataFetch();
               key="admin"
               render={(data) => (
                 <div>
-                <Badge color="green">{data.phone_number}</Badge>
+                  <Badge color="green">{data.phone_number}</Badge>
                 </div>
               )}
             />
@@ -212,18 +237,13 @@ const fetcher = useDataFetch();
               title="Is active"
               dataIndex="isActive"
               key="isActive"
-            //   render={(data) => (
-            //     <div>
-            //     <Badge color="green">{data}</Badge>
-            //     </div>
-            //   )}
             />
             <Column
               dataIndex="id"
               key="id"
-              render={(id) => (
+              render={(id, item) => (
                 <div>
-                  <ActionDropdown id={id} />
+                  <ActionDropdown id={id} item={item} />
                 </div>
               )}
             />
@@ -231,7 +251,7 @@ const fetcher = useDataFetch();
         </div>
       </Card>
       <Modal
-        title="Add Address"
+        title={isEditing ? "Edit Address" : "Add Address"}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -259,7 +279,7 @@ const fetcher = useDataFetch();
         </Form>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default Addresses
+export default Addresses;

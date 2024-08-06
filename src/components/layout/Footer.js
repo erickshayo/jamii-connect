@@ -11,8 +11,8 @@ function Footer() {
           <div className="copyright">
             © 2024, made with
              by
-            <a href="#pablo" className="font-weight-bold" target="_blank">
-              Creative Tim
+            <a href="####" className="font-weight-bold" target="_blank">
+              JamiiConect
             </a>
             for a better web.
           </div>
@@ -26,7 +26,7 @@ function Footer() {
                   className="nav-link text-muted"
                   target="_blank"
                 >
-                  Creative Tim
+                  JamiiConect
                 </a>
               </li>
               

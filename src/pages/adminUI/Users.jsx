@@ -27,15 +27,16 @@ const fetcher = useDataFetch();
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedRole, setSelectedRole] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+  console.log(addressessAdmSNo[0]?.userId);
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchValue(value);
     const filtered = addressessAdmSNo.filter(user =>
-      user.lname.toLowerCase().includes(value.toLowerCase()) ||
-      user.fname.toLowerCase().includes(value.toLowerCase()) ||
-      user.phone_number.includes(value) ||
-      user.email.toLowerCase().includes(value.toLowerCase())
+      user?.lname?.toLowerCase().includes(value.toLowerCase()) ||
+      user?.fname?.toLowerCase().includes(value.toLowerCase()) ||
+      user?.phone_number.includes(value) ||
+      user?.email?.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredData(filtered);
   };
@@ -75,7 +76,7 @@ const fetcher = useDataFetch();
           const response = await fetcher.fetch({
             url: usersInfo.usersInfo + `?queryType=all`,
           });
-          console.log(response);
+
 
           if (response) {
             setaddressessAdm(response)
@@ -174,7 +175,7 @@ const fetcher = useDataFetch();
               sorter={(a, b) => a.sNo - b.sNo}
             />
             <Column
-              title="Name"
+              title="Last Name"
               dataIndex="lname"
               key="lname"
             />
@@ -185,7 +186,7 @@ const fetcher = useDataFetch();
               key="fname"
              
             />
-            <Column title="Postal Code" key="phone_number"
+            <Column title="Phone Number" key="phone_number"
          dataIndex="phone_number"
 
             />
@@ -200,7 +201,7 @@ const fetcher = useDataFetch();
                />
            
             <Column
-              title="Is active"
+              title="NIDA Number"
               dataIndex="nin_number"
               key="nin_number"
             //   render={(data) => (

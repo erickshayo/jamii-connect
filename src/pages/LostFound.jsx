@@ -77,13 +77,13 @@ const LostAndFoundList = () => {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      if (response.save) {
+      if (response) {
         message.success('Item added successfully');
-        handleCloseModal();
-        fetchLostAndFoundItems(); // Reload items after adding new item
-      } else {
-        message.error('Failed to add item');
+       
+       // Reload items after adding new item
       }
+      handleCloseModal();
+      fetchLostAndFoundItems(); 
     } catch (error) {
       console.error('Error adding item:', error);
       message.error('Failed to add item');

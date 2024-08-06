@@ -72,16 +72,15 @@ const ViewForum = () => {
 
     const handleDeleteComment = async (commentId) => {
         try {
-            const response = await fetcher.fetch({
-                url: forumsUrls.comment + `/${commentId}`,
-                method: 'DELETE',
-            });
-            if (response && response.message === 'Comment deleted successfully') {
+            const response = await formPost.deleteRequest({
+                url: forumsUrls.comment + `/${commentId}/`,
+              })
+              console.log(response);
+            if (response?.status === 204) {
                 message.success('Comment deleted successfully');
                 // Optionally reload comments or handle UI update
-            } else {
-                message.error('Failed to delete comment');
-            }
+            } 
+            fetchComments();
         } catch (error) {
             console.error('Error deleting comment:', error);
             message.error('Failed to delete comment');

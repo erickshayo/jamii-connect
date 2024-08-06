@@ -23,7 +23,7 @@ import { useFormPost } from "../hooks/FormDataHoook";
 import { useDispatch } from "react-redux";
 import { loginAuth } from "../App/AuthSlice";
 import { authUrls } from "../utils/apis";
-import signin from "../assets/images/Sign-in.gif"
+import signin from "../assets/images/jamii_2.jpg"
 const { Content, Sider } = Layout;
 
 
@@ -147,7 +147,7 @@ export default function LoginPage() {
               /> */}
             </div>
               {/* Add aligned content about the digital scale */}
-              <div style={{ marginTop: '2px' }}>
+              <div style={{ marginTop: '100px' }}>
                   <h1 >Jamii - Connect</h1>
                   {/* <h3>A bluetooth enabled digital scale</h3>
                   <p>Measure everything with precision.</p> */}

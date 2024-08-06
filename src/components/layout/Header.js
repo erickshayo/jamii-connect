@@ -89,6 +89,7 @@ function Header({
     try {
       setisLoading(true);
       const userResponse = await fetcher.fetch({ url: `${usersInfo.usersInfo}?queryType=single&&user_id=${userId}` });
+      setuserInfo(userResponse);
       const addressResponse = await fetcher.fetch({ url: `${AddressesUrls.addrss}?queryType=single&&userId=${userResponse?.id}` });
 
       if (userResponse) {

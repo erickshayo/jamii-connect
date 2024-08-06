@@ -10,6 +10,7 @@ import { UserOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
 import { renderDateTime } from '../Addresses';
 import swal from "sweetalert";
+import axios from 'axios';
 // import AddAnnouncentModal from '../components/ui/AddAnnouncentModal';
 
 function AdminAnnouncements() {
@@ -71,8 +72,9 @@ function AdminAnnouncements() {
         okText: 'OK',
         okType:"danger",
         cancelText: 'cancel',
-        onOk:() => {
-          
+        onOk:async () =>  {
+          await axios.delete(announcements.announcementss+ `/${id}/`);
+          modal.success("Announcement deleted successfully")
         }
       });
     console.log(`Edit action for ID: ${id}`);
